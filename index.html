@@ -5,94 +5,133 @@
 <title>Will You Be My Valentine?</title>
 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', sans-serif;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-    body {
-        height: 100vh;
-        overflow: hidden;
-    }
+body {
+    height: 100vh;
+    overflow: hidden;
+}
 
-    /* Background Slideshow */
-    .slideshow {
-        position: fixed;
-        inset: 0;
-        z-index: -2;
-        background-size: cover;
-        background-position: center;
-        animation: slideshow 20s infinite;
-    }
+/* Background slideshow */
+.slideshow {
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    background-size: cover;
+    background-position: center;
+    animation: slideshow 20s infinite;
+}
 
-    @keyframes slideshow {
-        0%   { background-image: url("myphotos/pic1.jpeg"); }
-        25%  { background-image: url("myphotos/pic2.jpeg"); }
-        50%  { background-image: url("myphotos/pic3.jpeg"); }
-        75%  { background-image: url("myphotos/pic4.jpeg"); }
-        100% { background-image: url("myphotos/pic1.jpeg"); }
-    }
+@keyframes slideshow {
+    0%   { background-image: url("myphotos/pic1.jpeg"); }
+    25%  { background-image: url("myphotos/pic2.jpeg"); }
+    50%  { background-image: url("myphotos/pic3.jpeg"); }
+    75%  { background-image: url("myphotos/pic4.jpeg"); }
+    100% { background-image: url("myphotos/pic1.jpeg"); }
+}
 
-    /* Dark overlay */
-    .overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: -1;
-    }
+/* Dark overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: -2;
+}
 
-    /* Center container */
-    .container {
-        position: relative;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+/* Center area */
+.container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    .card {
-        background: rgba(255,255,255,0.15);
-        backdrop-filter: blur(10px);
-        padding: 40px 50px;
-        border-radius: 25px;
-        text-align: center;
-        color: white;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
+.card {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    padding: 40px 50px;
+    border-radius: 25px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
 
-    h1 {
-        font-size: 36px;
-        margin-bottom: 25px;
-        color: #ffb3c6;
-    }
+h1 {
+    font-size: 34px;
+    margin-bottom: 25px;
+    color: #ffb3c6;
+}
 
-    button {
-        padding: 12px 30px;
-        font-size: 16px;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        margin: 10px;
-    }
+button {
+    padding: 12px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin: 10px;
+}
 
-    #yesBtn {
-        background: #ff4d6d;
-        color: white;
-    }
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+}
 
-    #noBtn {
-        background: #ddd;
-        position: absolute;
-        color: black;
-        transition: all 0.25s ease;
-        touch-action: manipulation;
-    }
+#noBtn {
+    background: #ddd;
+    color: black;
+    position: absolute;
+    transition: all 0.25s ease;
+}
+
+/* Floating hearts */
+.heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 24px;
+    animation: floatUp 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+/* Love letter popup */
+.popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 90%;
+    text-align: center;
+}
+
+.popup-content h2 {
+    color: #ff4d6d;
+    margin-bottom: 15px;
+}
 </style>
 </head>
 
 <body>
+
+<audio id="music" src="music.mp3" loop></audio>
 
 <div class="slideshow"></div>
 <div class="overlay"></div>
@@ -100,49 +139,72 @@
 <div class="container">
     <div class="card">
         <h1>Will you be my Valentine, Betu? 💖</h1>
-        <button id="yesBtn" onclick="yesClicked()">Yes 💕</button>
-        <button id="noBtn"
-                onmouseover="moveButton()"
-                onclick="moveButton()"
-                ontouchstart="moveButton()">
-            No 😜
-        </button>
+        <button id="yesBtn">Yes 💕</button>
+        <button id="noBtn">No 😜</button>
+    </div>
+</div>
+
+<!-- Love Letter -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h2>My Love 💌</h2>
+        <p>
+            You are my happiest place, my peace, my forever.  
+            Thank you for choosing me today and always ❤️
+        </p>
+        <br>
+        <button onclick="closePopup()">I love you too 😘</button>
     </div>
 </div>
 
 <script>
-    function yesClicked() {
-        document.body.innerHTML = `
-        <div style="
-            height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            background:linear-gradient(135deg,#ff758f,#ffb3c6);
-            text-align:center;">
-            <h1 style="color:white;font-size:42px;">
-                Yayyy 💖 <br>
-                I knew it! <br>
-                I love you so much 😘
-            </h1>
-        </div>`;
-    }
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const container = document.querySelector(".container");
+const music = document.getElementById("music");
 
-    function moveButton() {
-        const btn = document.getElementById("noBtn");
-        const container = document.querySelector(".container");
+/* BUTTON MOVEMENT – WORKS EVERYWHERE */
+function moveButton() {
+    const padding = 20;
+    const maxX = container.clientWidth - noBtn.offsetWidth - padding;
+    const maxY = container.clientHeight - noBtn.offsetHeight - padding;
 
-        const padding = 30;
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
 
-        const maxX = container.clientWidth - btn.offsetWidth - padding;
-        const maxY = container.clientHeight - btn.offsetHeight - padding;
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
 
-        const x = Math.random() * maxX + padding;
-        const y = Math.random() * maxY + padding;
+/* Attach events properly */
+noBtn.addEventListener("mouseenter", moveButton); // laptop
+noBtn.addEventListener("click", moveButton);      // mobile
+noBtn.addEventListener("touchstart", moveButton); // mobile
 
-        btn.style.left = x + "px";
-        btn.style.top = y + "px";
-    }
+/* YES button */
+yesBtn.addEventListener("click", () => {
+    music.play();
+    showHearts();
+    document.getElementById("popup").style.display = "flex";
+});
+
+/* Floating hearts */
+function showHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (20 + Math.random() * 20) + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 6000);
+    }, 300);
+}
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
 </script>
 
 </body>
