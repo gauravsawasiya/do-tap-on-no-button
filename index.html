@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Will You Be My Valentine?</title>
+<title>Will You Be My Valentine? 💖</title>
 
 <style>
 * {
@@ -21,7 +21,7 @@ body {
 .slideshow {
     position: fixed;
     inset: 0;
-    z-index: -3;
+    z-index: -2;
     background-size: cover;
     background-position: center;
     animation: slideshow 20s infinite;
@@ -35,139 +35,92 @@ body {
     100% { background-image: url("myphotos/pic1.jpeg"); }
 }
 
-/* Dark overlay */
+/* Overlay */
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.55);
-    z-index: -2;
+    background: rgba(0,0,0,0.45);
+    z-index: -1;
 }
 
-/* Center area */
+/* Center */
 .container {
-    position: relative;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Card */
 .card {
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(10px);
-    padding: 40px 50px;
-    border-radius: 25px;
+    position: relative;
+    width: 90%;
+    max-width: 420px;
+    padding: 40px 30px 70px;
     text-align: center;
-    color: white;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    color: white;
 }
 
 h1 {
-    font-size: 34px;
+    font-size: 28px;
     margin-bottom: 25px;
     color: #ffb3c6;
 }
 
 button {
-    padding: 12px 30px;
+    padding: 12px 26px;
     font-size: 16px;
-    border: none;
     border-radius: 12px;
+    border: none;
     cursor: pointer;
-    margin: 10px;
 }
 
 #yesBtn {
     background: #ff4d6d;
     color: white;
+    margin-right: 10px;
 }
 
 #noBtn {
     background: #ddd;
     color: black;
     position: absolute;
+    bottom: 20px;
+    right: 20px;
     transition: all 0.25s ease;
-}
-
-/* Floating hearts */
-.heart {
-    position: fixed;
-    bottom: -20px;
-    font-size: 24px;
-    animation: floatUp 6s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-110vh); opacity: 0; }
-}
-
-/* Love letter popup */
-.popup {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-}
-
-.popup-content {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    max-width: 90%;
-    text-align: center;
-}
-
-.popup-content h2 {
-    color: #ff4d6d;
-    margin-bottom: 15px;
 }
 </style>
 </head>
 
 <body>
 
-<audio id="music" src="music.mp3" loop></audio>
-
 <div class="slideshow"></div>
 <div class="overlay"></div>
 
 <div class="container">
-    <div class="card">
+    <div class="card" id="card">
         <h1>Will you be my Valentine, Betu? 💖</h1>
         <button id="yesBtn">Yes 💕</button>
         <button id="noBtn">No 😜</button>
     </div>
 </div>
 
-<!-- Love Letter -->
-<div class="popup" id="popup">
-    <div class="popup-content">
-        <h2>My Love 💌</h2>
-        <p>
-            You are my happiest place, my peace, my forever.  
-            Thank you for choosing me today and always ❤️
-        </p>
-        <br>
-        <button onclick="closePopup()">I love you too 😘</button>
-    </div>
-</div>
-
 <script>
 const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const container = document.querySelector(".container");
-const music = document.getElementById("music");
+const card = document.getElementById("card");
 
-/* BUTTON MOVEMENT – WORKS EVERYWHERE */
 function moveButton() {
+    const cardRect = card.getBoundingClientRect();
+    const btnRect = noBtn.getBoundingClientRect();
+
     const padding = 20;
-    const maxX = container.clientWidth - noBtn.offsetWidth - padding;
-    const maxY = container.clientHeight - noBtn.offsetHeight - padding;
+
+    const maxX = cardRect.width - btnRect.width - padding;
+    const maxY = cardRect.height - btnRect.height - padding;
 
     const x = Math.random() * maxX;
     const y = Math.random() * maxY;
@@ -176,35 +129,30 @@ function moveButton() {
     noBtn.style.top = y + "px";
 }
 
-/* Attach events properly */
-noBtn.addEventListener("mouseenter", moveButton); // laptop
-noBtn.addEventListener("click", moveButton);      // mobile
-noBtn.addEventListener("touchstart", moveButton); // mobile
+/* Desktop */
+noBtn.addEventListener("mouseenter", moveButton);
 
-/* YES button */
-yesBtn.addEventListener("click", () => {
-    music.play();
-    showHearts();
-    document.getElementById("popup").style.display = "flex";
-});
+/* Mobile */
+noBtn.addEventListener("click", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
 
-/* Floating hearts */
-function showHearts() {
-    setInterval(() => {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerText = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (20 + Math.random() * 20) + "px";
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 6000);
-    }, 300);
-}
-
-function closePopup() {
-    document.getElementById("popup").style.display = "none";
-}
+/* Yes button */
+document.getElementById("yesBtn").onclick = () => {
+    document.body.innerHTML = `
+    <div style="
+        height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:linear-gradient(135deg,#ff758f,#ffb3c6);
+        text-align:center;">
+        <h1 style="color:white;font-size:34px;">
+            Yayyy 💖<br>
+            I knew it!<br>
+            I love you so much 😘
+        </h1>
+    </div>`;
+};
 </script>
 
 </body>
