@@ -164,17 +164,12 @@
         color: white;
     }
 
-    /* #noBtn {
+    #noBtn {
         background: #ddd;
         position: absolute;
         color: black;
-    } */
-      #noBtn {
-        background: #ddd;
-        position: absolute;
-        color: black;
-        transition: all 0.25s ease;
     }
+      
 </style>
 </head>
 
@@ -212,7 +207,7 @@
     function moveButton() {
         const btn = document.getElementById("noBtn");
 
-        const padding = 20; // safe space from edges
+        const padding = 30; // safe space from edges
 
         const maxX = window.innerWidth - btn.offsetWidth - padding;
         const maxY = window.innerHeight - btn.offsetHeight - padding;
