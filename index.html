@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Will You Be My Valentine? 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine 💖</title>
 
 <style>
 * {
@@ -24,10 +25,10 @@ body {
     z-index: -2;
     background-size: cover;
     background-position: center;
-    animation: bgSlide 20s infinite;
+    animation: slide 20s infinite;
 }
 
-@keyframes bgSlide {
+@keyframes slide {
     0%   { background-image: url("myphotos/pic1.jpeg"); }
     25%  { background-image: url("myphotos/pic2.jpeg"); }
     50%  { background-image: url("myphotos/pic3.jpeg"); }
@@ -35,7 +36,6 @@ body {
     100% { background-image: url("myphotos/pic1.jpeg"); }
 }
 
-/* Dark overlay */
 .overlay {
     position: fixed;
     inset: 0;
@@ -43,7 +43,6 @@ body {
     z-index: -1;
 }
 
-/* Center */
 .container {
     height: 100vh;
     display: flex;
@@ -51,57 +50,67 @@ body {
     justify-content: center;
 }
 
-/* Card */
 .card {
-    position: relative;
     width: 90%;
     max-width: 420px;
-    padding: 40px 30px 90px;
-    text-align: center;
+    padding: 30px;
     border-radius: 25px;
     background: rgba(255,255,255,0.15);
     backdrop-filter: blur(12px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    text-align: center;
     color: white;
+    position: relative;
 }
 
+/* Title */
 h1 {
-    font-size: 28px;
-    margin-bottom: 30px;
+    font-size: 26px;
+    margin-bottom: 25px;
     color: #ffb3c6;
 }
 
-button {
-    padding: 12px 28px;
-    font-size: 16px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
+/* YES button area */
+.yes-area {
+    margin-bottom: 30px;
 }
 
 #yes {
+    padding: 14px 36px;
+    font-size: 18px;
+    border-radius: 14px;
+    border: none;
     background: #ff4d6d;
     color: white;
+    cursor: pointer;
+}
+
+/* NO button playground */
+.no-zone {
+    position: relative;
+    height: 120px; /* reserved space */
+    border-radius: 15px;
 }
 
 #no {
-    background: #ddd;
-    color: black;
     position: absolute;
-    bottom: 25px;
-    right: 25px;
+    padding: 12px 26px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    background: #eee;
+    color: black;
+    cursor: pointer;
     transition: all 0.25s ease;
 }
 
 /* Envelope */
 .envelope {
-    width: 300px;
-    height: 200px;
+    width: 280px;
+    height: 180px;
     background: #ffcad4;
+    border-radius: 12px;
     position: relative;
-    border-radius: 10px;
     cursor: pointer;
-    margin: auto;
 }
 
 .envelope::before {
@@ -109,19 +118,16 @@ button {
     position: absolute;
     inset: 0;
     background: #ff8fab;
-    clip-path: polygon(0 0,100% 0,50% 50%);
+    clip-path: polygon(0 0,100% 0,50% 55%);
 }
 
 .letter {
-    position: absolute;
-    top: 20px;
-    left: 15px;
-    right: 15px;
-    bottom: 15px;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
     display: none;
+    position: absolute;
+    inset: 15px;
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
     color: #ff4d6d;
     font-size: 15px;
 }
@@ -138,22 +144,26 @@ button {
 </audio>
 
 <div class="container">
-    <div class="card" id="card">
+    <div class="card">
         <h1>Will you be my Valentine, Betu? 💖</h1>
-        <button id="yes">Yes 💕</button>
-        <button id="no">No 😜</button>
+
+        <div class="yes-area">
+            <button id="yes">Yes 💕</button>
+        </div>
+
+        <div class="no-zone" id="zone">
+            <button id="no">No 😜</button>
+        </div>
     </div>
 </div>
 
 <script>
 const noBtn = document.getElementById("no");
-const card = document.getElementById("card");
-const yesBtn = document.getElementById("yes");
+const zone = document.getElementById("zone");
 
 function moveNo() {
-    const padding = 15;
-    const maxX = card.clientWidth - noBtn.offsetWidth - padding;
-    const maxY = card.clientHeight - noBtn.offsetHeight - padding;
+    const maxX = zone.clientWidth - noBtn.offsetWidth;
+    const maxY = zone.clientHeight - noBtn.offsetHeight;
 
     const x = Math.random() * maxX;
     const y = Math.random() * maxY;
@@ -166,20 +176,19 @@ noBtn.addEventListener("mouseenter", moveNo);
 noBtn.addEventListener("click", moveNo);
 noBtn.addEventListener("touchstart", moveNo);
 
-yesBtn.onclick = () => {
+document.getElementById("yes").onclick = () => {
     document.body.innerHTML = `
     <div class="container">
         <div>
             <div class="envelope" onclick="this.querySelector('.letter').style.display='block'">
                 <div class="letter">
                     My love ❤️<br><br>
-                    You are my smile, my peace,
-                    my forever. Every heartbeat
-                    whispers your name.  
-                    Thank you for being mine 💕
+                    From the moment you came into my life,
+                    everything felt warmer and brighter.
+                    You are my forever 💕
                 </div>
             </div>
-            <p style="text-align:center;color:white;margin-top:15px;">
+            <p style="color:white;text-align:center;margin-top:12px;">
                 Tap the envelope 💌
             </p>
         </div>
